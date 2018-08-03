@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleCatalog.Data.Model
 {
+    [Table("ProductCategory")]
     public class ProductCategory : Entity
     {
         /// <summary>

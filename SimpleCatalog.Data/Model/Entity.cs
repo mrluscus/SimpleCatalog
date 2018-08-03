@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleCatalog.Data.Model
 {
@@ -14,7 +14,7 @@ namespace SimpleCatalog.Data.Model
         /// <value>
         /// The identifier.
         /// </value>
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
     }
 }

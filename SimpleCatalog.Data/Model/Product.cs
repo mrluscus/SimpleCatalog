@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleCatalog.Data.Model
 {
+    [Table("Product")]
     public class Product : Entity
     {
         /// <summary>
