@@ -49,6 +49,7 @@ namespace SimpleCatalog.Data.Dto
         /// <param name="value">The Product type value.</param>
         public ProductDto(Product value)
         {
+            Id = value.Id;
             Name = value.Name;
             Price = value.Price;
             Quantity = value.Quantity;

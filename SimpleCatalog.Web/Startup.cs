@@ -11,6 +11,8 @@ using SimpleCatalog.Data;
 using System;
 using System.IO;
 using System.Reflection;
+using SimpleCatalog.Services.Interfaces;
+using SimpleCatalog.Services.Services;
 
 namespace SimpleCatalog.Web
 {
@@ -45,6 +47,8 @@ namespace SimpleCatalog.Web
 
             services
                 .AddDbContext<SimpleCatalogDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient, ServiceLifetime.Transient)
+                .AddTransient<IProductCategoryService, ProductCategoryService>()
+                .AddTransient<IProductService, ProductService>()
                 .AddSingleton(new LoggerFactory().AddNLog())
                 .AddLogging()
                 .AddMvc()

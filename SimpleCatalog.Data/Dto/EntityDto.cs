@@ -6,6 +6,7 @@ namespace SimpleCatalog.Data.Dto
     /// <summary>
     /// Base class for entities
     /// </summary>
+    [DataContract]
     public abstract class EntityDto
     {
         /// <summary>
