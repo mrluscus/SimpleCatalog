@@ -9,6 +9,9 @@ import { ProductCategoryComponent } from './components/product-category/product-
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatCheckboxModule, MatCardModule } from '@angular/material';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +23,11 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
