@@ -1,10 +1,10 @@
 <div class='container-fluid'>
   <div class='row'>
     <div class='col-md-4'>
-      <product-category></product-category>
+      <product-category (onChangeCategory)="onChangeCategory($event)"></product-category>
     </div>
     <div class='col-md-4'>
-      <product-list></product-list>
+      <product-list [categoryId]="categoryId"></product-list>
     </div>
     <div class='col-md-4'>
       <product-detail></product-detail>

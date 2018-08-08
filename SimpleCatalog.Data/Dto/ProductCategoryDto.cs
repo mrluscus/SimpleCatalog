@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SimpleCatalog.Data.Model;
 
@@ -26,6 +27,12 @@ namespace SimpleCatalog.Data.Dto
         public Guid? ParentId { get; set; }
 
         /// <summary>
+        /// The children
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public List<ProductCategoryDto> Children;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProductCategoryDto"/> class.
         /// </summary>
         /// <param name="value">The ProductCategory type value.</param>
@@ -34,6 +41,7 @@ namespace SimpleCatalog.Data.Dto
             Id = value.Id;
             Name = value.Name;
             ParentId = value.ParentId;
+            Children = null;
         }
     }
 }

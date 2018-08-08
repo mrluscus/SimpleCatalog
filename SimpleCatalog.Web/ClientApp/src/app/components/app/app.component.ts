@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  public categoryId: string;
+
+  onChangeCategory(categoryId: string) {
+    this.categoryId = categoryId;
+  }
+  
 }
