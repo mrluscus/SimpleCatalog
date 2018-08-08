@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimpleCatalog.Data;
 using SimpleCatalog.Data.Dto;
 using SimpleCatalog.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -35,9 +35,11 @@ namespace SimpleCatalog.Services.Services
         /// <returns></returns>
         public async Task<List<ProductCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _dbContext.ProductCategories
-                .Select(x=> new ProductCategoryDto(x))
+            var itemsFromDb = await _dbContext.ProductCategories
+                .Select(x => new ProductCategoryDto(x))
+                .OrderBy(x => x.Name)
                 .ToListAsync(cancellationToken);
+            return ConvertToTree(itemsFromDb);
         }
 
         /// <summary>
@@ -51,6 +53,29 @@ namespace SimpleCatalog.Services.Services
             var item = await _dbContext.ProductCategories.FindAsync(id);
             var res = new ProductCategoryDto(item);
             return res;
+        }
+
+        private List<ProductCategoryDto> ConvertToTree(List<ProductCategoryDto> dbElements)
+        {
+            dbElements.ForEach(x => x.Children = null);
+            var result = new List<ProductCategoryDto>();
+
+            // Creates new list with filled Children property for properly using on frontend
+            foreach (var el in dbElements)
+            {
+                var parentEl = dbElements.FirstOrDefault(x => x.Id == el.ParentId);
+                if (parentEl != null)
+                {
+                    if (parentEl.Children == null) parentEl.Children = new List<ProductCategoryDto>();
+                    parentEl.Children.Add(el);
+                }
+                else
+                {
+                    result.Add(el);
+                }
+            }
+
+            return result;
         }
 
         #region IDisposable Support

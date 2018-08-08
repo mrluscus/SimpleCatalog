@@ -1,0 +1,17 @@
+.catalog-tree-invisible {
+    display: none;
+}
+
+.catalog-tree ul, .catalog-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.catalog-node:hover {
+    cursor: pointer;
+}
+
+.background-highlight {
+    background-color: lightblue;
+}
