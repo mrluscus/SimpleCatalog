@@ -9,7 +9,7 @@ import { AppComponent } from './components/app/app.component';
 import { ProductCategoryComponent } from './components/product-category/product-category.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
-import { ProductCategoryService } from './services/index';
+import { ProductCategoryService, ProductService } from './services/index';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -18,7 +18,12 @@ import {
   MatCardModule,
   MatTreeModule,
   MatIconModule,
-  MatProgressBarModule  
+  MatProgressBarModule,
+  MatPaginatorModule,
+  MatTableModule,
+  MatProgressSpinnerModule,
+  MatSortModule,
+  MatTooltipModule
 } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
 
@@ -42,11 +47,17 @@ import { CdkTreeModule } from '@angular/cdk/tree';
     MatCardModule,
     MatTreeModule,
     MatIconModule,
-    MatProgressBarModule    
+    MatProgressBarModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl },
-    ProductCategoryService
+    ProductCategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })

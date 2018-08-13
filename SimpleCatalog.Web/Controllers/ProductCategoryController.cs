@@ -30,8 +30,8 @@ namespace SimpleCatalog.Web.Controllers
                 var items = await _productCategoryService.GetAllAsync();
                 var res = Json(items);
 
-                // Imitation delay of loading
-                Thread.Sleep(5000);
+                // Emulate delay of loading
+                Thread.Sleep(2000);
 
                 return res;
             }
