@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProductCategory, Product } from '../../models';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  public categoryId: string;
+  public productCategoryNode: ProductCategory;
+  public productSelected: Product;
 
-  onChangeCategory(categoryId: string) {
-    this.categoryId = categoryId;
+  onChangeCategory(category: ProductCategory) {
+    this.productCategoryNode = category;
   }
-  
+
+  onChangeProduct(product: Product) {
+    this.productSelected = product;
+  }
 }

@@ -1,1 +1,2 @@
-export { CategoryNode } from './category-node';
+export { ProductCategory } from './product-category';
+export { Product } from './product';

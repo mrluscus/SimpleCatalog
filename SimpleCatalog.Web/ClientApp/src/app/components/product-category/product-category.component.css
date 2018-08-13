@@ -2,6 +2,11 @@
     display: none;
 }
 
+.catalog-tree {
+    overflow-y: auto;
+    max-height: 85vh;
+}
+
 .catalog-tree ul, .catalog-tree li {
     margin-top: 0;
     margin-bottom: 0;

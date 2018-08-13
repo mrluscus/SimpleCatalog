@@ -2,7 +2,7 @@ import { Component, ViewChildren, ElementRef, Renderer2, EventEmitter, Output } 
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTreeNode } from '@angular/material/tree';
 import { ProductCategoryService } from '../../services/index';
-import { CategoryNode } from '../../models/category-node';
+import { ProductCategory } from '../../models/product-category';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -12,24 +12,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ProductCategoryComponent {
 
-    @Output() onChangeCategory = new EventEmitter<string>();
-    dataChange = new BehaviorSubject<CategoryNode[]>([]);
-    nestedTreeControl: NestedTreeControl<CategoryNode>;
-    nestedDataSource: MatTreeNestedDataSource<CategoryNode>;
+    @Output() onChangeCategory = new EventEmitter<ProductCategory>();
+    dataChange = new BehaviorSubject<ProductCategory[]>([]);
+    nestedTreeControl: NestedTreeControl<ProductCategory>;
+    nestedDataSource: MatTreeNestedDataSource<ProductCategory>;
 
-    hasNestedChild = (_: number, nodeData: CategoryNode) => nodeData.children;
-    private _getChildren = (node: CategoryNode) => node.children;
+    hasNestedChild = (_: number, nodeData: ProductCategory) => nodeData.children;
+    private _getChildren = (node: ProductCategory) => node.children;
 
     isLoading: boolean;
 
     constructor(productCategoryService: ProductCategoryService, private renderer: Renderer2) {
 
-        this.nestedTreeControl = new NestedTreeControl<CategoryNode>(this._getChildren);
+        this.nestedTreeControl = new NestedTreeControl<ProductCategory>(this._getChildren);
         this.nestedDataSource = new MatTreeNestedDataSource();
         this.isLoading = true;
 
         productCategoryService.getAll().subscribe(resp => {
-            const data = resp.json() as CategoryNode[];
+            const data = resp.json() as ProductCategory[];
             this.dataChange.next(data);
             this.dataChange.subscribe(data => {
                 this.nestedDataSource.data = data;
@@ -69,9 +69,8 @@ export class ProductCategoryComponent {
         this.hasListener = this.hasListener.filter((element) => document.contains(element));
     }
 
-    onClick(node: CategoryNode) {
-        console.log(node);
-        this.onChangeCategory.emit(node.id);
+    onClick(node: ProductCategory) {        
+        this.onChangeCategory.emit(node);
     };
 
 }

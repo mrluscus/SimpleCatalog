@@ -50,5 +50,13 @@ namespace SimpleCatalog.Services.Interfaces
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Deletes the List of Products.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        Task<bool> DeleteAsync(List<Guid> ids, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

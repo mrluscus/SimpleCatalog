@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimpleCatalog.Data;
+using SimpleCatalog.Data.Dto;
 using SimpleCatalog.Data.Model;
 using SimpleCatalog.Services.Interfaces;
 using System;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SimpleCatalog.Data.Dto;
 
 namespace SimpleCatalog.Services.Services
 {
@@ -76,32 +76,41 @@ namespace SimpleCatalog.Services.Services
         /// <returns></returns>
         public async Task<Guid> SaveAsync(ProductDto item, CancellationToken cancellationToken = new CancellationToken())
         {
-            var dbSet = _dbContext.Products;
-            var itemFromDb = dbSet.Find(item.Id);
-            if (itemFromDb != null)
+            try
             {
-                itemFromDb.ProductCategoryId = item.ProductCategoryId;
-                itemFromDb.Name = item.Name;
-                itemFromDb.Price = item.Price;
-                itemFromDb.Quantity = item.Quantity;
-                dbSet.Update(itemFromDb);
-            }
-            else
-            {
-                itemFromDb = new Product
+                var dbSet = _dbContext.Products;
+                var itemFromDb = dbSet.Find(item.Id);
+                if (itemFromDb != null)
                 {
-                    Id = Guid.NewGuid(),
-                    ProductCategoryId = item.ProductCategoryId,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                };
+                    itemFromDb.ProductCategoryId = item.ProductCategoryId;
+                    itemFromDb.Name = item.Name;
+                    itemFromDb.Price = item.Price;
+                    itemFromDb.Quantity = item.Quantity;
+                    dbSet.Update(itemFromDb);
+                }
+                else
+                {
+                    itemFromDb = new Product
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductCategoryId = item.ProductCategoryId,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Quantity = item.Quantity
+                    };
 
-                dbSet.Add(itemFromDb);
+                    dbSet.Add(itemFromDb);
+                }
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
+                return item.Id;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
             }
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
-            return item.Id;
+            return Guid.Empty;
         }
 
         /// <summary>
@@ -112,16 +121,54 @@ namespace SimpleCatalog.Services.Services
         /// <returns></returns>
         public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = new CancellationToken())
         {
-            var dbSet = _dbContext.Products;
-            var entity = dbSet.Find(id);
-            if (entity != null)
+            try
             {
-                dbSet.Remove(entity);
-                await _dbContext.SaveChangesAsync(cancellationToken);
-                return true;
+                var dbSet = _dbContext.Products;
+                var entity = dbSet.Find(id);
+                if (entity != null)
+                {
+                    dbSet.Remove(entity);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return false;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Deletes the List of Products.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteAsync(List<Guid> ids, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var dbSet = _dbContext.Products;
+            foreach (var id in ids)
+            {
+                var entity = dbSet.Find(id);
+                if (entity != null)
+                {
+                    dbSet.Remove(entity);
+                }
+            }
+
+            try
+            {
+                await _dbContext.SaveChangesAsync(cancellationToken);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return false;
+            }
         }
 
         #region IDisposable Support
