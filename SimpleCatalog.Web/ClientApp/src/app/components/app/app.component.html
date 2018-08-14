@@ -7,7 +7,7 @@
       <product-list [productCategoryNode]="productCategoryNode" (onChangeProduct)="onChangeProduct($event)"></product-list>
     </div>
     <div class='col-md-4'>
-      <product-detail [productSelected]="productSelected"></product-detail>
+      <product-detail [productSelected]="productSelected" (onEditProduct)="onEditProduct()"></product-detail>
     </div>
   </div>
 </div>

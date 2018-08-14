@@ -18,4 +18,8 @@ export class AppComponent {
   onChangeProduct(product: Product) {
     this.productSelected = product;
   }
+
+  onEditProduct(){
+    this.productCategoryNode = Object.assign({}, this.productCategoryNode);
+  }
 }

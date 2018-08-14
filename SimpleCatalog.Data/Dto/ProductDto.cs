@@ -1,5 +1,5 @@
-﻿using System;
-using SimpleCatalog.Data.Model;
+﻿using SimpleCatalog.Data.Model;
+using System;
 using System.Runtime.Serialization;
 
 namespace SimpleCatalog.Data.Dto
@@ -42,6 +42,10 @@ namespace SimpleCatalog.Data.Dto
         /// </value>
         [DataMember]
         public Guid ProductCategoryId { get; set; }
+
+        public ProductDto()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductDto"/> class.

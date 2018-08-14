@@ -13,63 +13,60 @@
     </mat-card-title>
 
     <mat-card-actions>
-        <button mat-button matTooltip="Add new product to the current category">
+        <button mat-button matTooltip="Add new product to the current category" (click)="addProduct()" [disabled]="!productCategoryNode.id">
             <mat-icon>add</mat-icon>
             Новый товар
         </button>
-        <button mat-button matTooltip="Delete selected products" (click)="deleteSelected()">
+        <button mat-button matTooltip="Delete selected products" (click)="deleteSelected()" [disabled]="selection.selected.length==0">
             <mat-icon>delete</mat-icon>
             Удалить
         </button>
     </mat-card-actions>
 
     <mat-card-content>
-        <div class="product-list-container mat-elevation-z2">
-            <div class="product-list-loading" *ngIf="isLoading">
+        <div class="mat-elevation-z2">
+            <div class="is-loading" *ngIf="isLoading">
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
 
-            <div class="product-list-table-container">
+            <mat-table [dataSource]="dataSource" matSort>
 
-                <mat-table [dataSource]="dataSource" matSort>
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [disabled]="!dataSource">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
 
-                    <!-- Checkbox Column -->
-                    <ng-container matColumnDef="select">
-                        <mat-header-cell *matHeaderCellDef>
-                            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                [disabled]="!dataSource">
-                            </mat-checkbox>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
-                            </mat-checkbox>
-                        </mat-cell>
-                    </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+                </ng-container>
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
-                    </ng-container>
+                <!-- Price Column -->
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.price}}</mat-cell>
+                </ng-container>
 
-                    <!-- Price Column -->
-                    <ng-container matColumnDef="price">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.price}}</mat-cell>
-                    </ng-container>
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="quantity">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.quantity}}</mat-cell>
+                </ng-container>
 
-                    <!-- Quantity Column -->
-                    <ng-container matColumnDef="quantity">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.quantity}}</mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}"
-                        (click)="onClick(row)" (mouseover)="row.hovered = true" (mouseout)="row.hovered=false">
-                    </mat-row>
-                </mat-table>
-            </div>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}"
+                    (click)="onClick(row)" (mouseover)="row.hovered = true" (mouseout)="row.hovered=false">
+                </mat-row>
+            </mat-table>
 
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="resultsLength" showFirstLastButtons></mat-paginator>
         </div>

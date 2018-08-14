@@ -1,7 +1,64 @@
 <mat-card>
+
+
     <mat-card-title>
-        Product Detail
+        <div class="row">
+            <div class="col-md-10">
+                {{product.name ? product.name : 'Товар'}}
+            </div>
+            <div class="col-md-2">
+                <button mat-icon-button>
+                    <mat-icon matTooltip="Close the window" aria-label="Close">close</mat-icon>
+                </button>
+            </div>
+        </div>
     </mat-card-title>
 
-    
+    <mat-card-actions>
+        <button mat-button matTooltip="Save product changes" (click)="saveProduct()" [disabled]="productForm.invalid">
+            <mat-icon>save</mat-icon>
+            Сохранить
+        </button>
+        <button mat-button matTooltip="Cancel product changes" (click)="cancelSelected()" [disabled]="!productForm.dirty">
+            <mat-icon>cancel</mat-icon>
+            Отменить
+        </button>
+    </mat-card-actions>
+
+    <mat-card-content>
+        <div class="mat-elevation-z2">
+            <div class="is-loading" *ngIf="isLoading">
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
+            </div>
+            <span>Фото</span>
+
+            <div class="row image-center">
+                <img class="preview img-thumbnail" [src]="imgSrc" alt="Image preview..." *ngIf="imgSrc">
+            </div>
+
+            <button mat-button class="upload-button" (click)="inputFile.click()">Загрузить</button>
+            <input class="input-image" #inputFile type="file" (change)="onFileChange($event)">
+
+            <form #productForm="ngForm" class="detail-container">
+                <!-- Name Column -->
+                <mat-form-field hintLabel="Не менее 3 символов">
+                    <input matInput [(ngModel)]="product.name" name="name" placeholder="Название" required minlength="3">
+                    <!-- <mat-error *ngIf="productName.invalid">Введите более 3 символов</mat-error>                 -->
+                </mat-form-field>
+
+                <!-- Price Column -->
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="product.price" name="price" placeholder="Цена" required min="0">
+                    <span matSuffix>USD</span>
+                </mat-form-field>
+
+                <!-- Quantity Column -->
+                <mat-form-field>
+                    <input matInput type="number" [(ngModel)]="product.quantity" name="quantity" placeholder="Количество" required min="0">
+                </mat-form-field>
+            </form>
+        </div>
+
+    </mat-card-content>
+
 </mat-card>
