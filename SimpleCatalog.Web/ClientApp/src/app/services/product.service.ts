@@ -1,5 +1,6 @@
 import { Http } from '@angular/http';
 import { Inject, Injectable } from '@angular/core';
+import { Product } from '../models';
 
 @Injectable()
 export class ProductService {
@@ -21,5 +22,9 @@ export class ProductService {
 
     deleteByIds(ids: string[]){
         return this.http.post(`${this.apiUrl}/DeleteByIds`, ids);
+    }
+
+    save(item: Product){
+        return this.http.post(`${this.apiUrl}`, item);
     }
 }

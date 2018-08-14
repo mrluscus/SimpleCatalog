@@ -14,7 +14,7 @@ export class ProductListComponent implements OnChanges, OnInit {
     @Input() productCategoryNode: ProductCategory;
     @Output() onChangeProduct = new EventEmitter<Product>();
     displayedColumns: string[];
-    isLoading = true;
+    isLoading: boolean;
     resultsLength = 0;
     // Selection of Checkboxes
     selection = new SelectionModel<Product>(true, []);
@@ -51,6 +51,7 @@ export class ProductListComponent implements OnChanges, OnInit {
             this.dataSource = new MatTableDataSource<Product>(data.json());
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.onChangeProduct.emit();
             this.isLoading = false;
         });
     }
@@ -90,6 +91,12 @@ export class ProductListComponent implements OnChanges, OnInit {
         row.highlighted = !row.highlighted;
 
         this.onChangeProduct.emit(row);
+    }
+
+    addProduct() {
+        let newProduct = new Product();
+        newProduct.productCategoryId = this.productCategoryNode.id;
+        this.onChangeProduct.emit(newProduct);
     }
 
 }

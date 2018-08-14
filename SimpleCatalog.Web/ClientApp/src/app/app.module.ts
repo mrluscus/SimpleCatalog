@@ -23,9 +23,11 @@ import {
   MatTableModule,
   MatProgressSpinnerModule,
   MatSortModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatInputModule
 } from '@angular/material';
 import { CdkTreeModule } from '@angular/cdk/tree';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { CdkTreeModule } from '@angular/cdk/tree';
     MatTableModule,
     MatProgressSpinnerModule,
     MatSortModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatFormFieldModule,  
+    MatInputModule  
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl },

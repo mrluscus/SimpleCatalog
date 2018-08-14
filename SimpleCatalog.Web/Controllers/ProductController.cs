@@ -36,8 +36,12 @@ namespace SimpleCatalog.Web.Controllers
         }
 
         [HttpPost]
-        public async Task Post([FromBody]ProductDto dto, CancellationToken cancellationToken)
-            => await _productService.SaveAsync(dto, cancellationToken);
+        public async Task Post([FromBody] ProductDto dto, CancellationToken cancellationToken)
+        {
+            // Emulate delay in HTTP response
+            Thread.Sleep(2000);
+            await _productService.SaveAsync(dto, cancellationToken);
+        }
 
         [HttpPut, Route("{id}")]
         public async Task Put(Guid id, [FromBody]ProductDto dto, CancellationToken cancellationToken)
