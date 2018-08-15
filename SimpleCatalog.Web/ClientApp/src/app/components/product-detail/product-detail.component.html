@@ -33,7 +33,7 @@
             <span>Фото</span>
 
             <div class="row image-center">
-                <img class="preview img-thumbnail" [src]="imgSrc" alt="Image preview..." *ngIf="imgSrc">
+                <img id="image" class="preview img-thumbnail" [src]="imgSrc" alt="Image preview..." *ngIf="imgSrc">
             </div>
 
             <button mat-button class="upload-button" (click)="inputFile.click()">Загрузить</button>

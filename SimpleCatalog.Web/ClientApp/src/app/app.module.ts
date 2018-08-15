@@ -9,7 +9,7 @@ import { AppComponent } from './components/app/app.component';
 import { ProductCategoryComponent } from './components/product-category/product-category.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
-import { ProductCategoryService, ProductService } from './services/index';
+import { ProductCategoryService, ProductService, ImageService } from './services/index';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -61,7 +61,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl },
     ProductCategoryService,
-    ProductService
+    ProductService,
+    ImageService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChanges, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Product } from '../../models';
-import { ProductService } from '../../services';
+import { ProductService, ImageService } from '../../services';
 
 @Component({
     selector: 'product-detail',
@@ -14,14 +14,17 @@ export class ProductDetailComponent implements OnInit {
     @Output() onEditProduct = new EventEmitter();
     @ViewChild('productForm')
     productForm: NgForm;
+    image: any;
+    sanitizedImageData: any;
 
     // Copy of original Product for editing
     private product: Product;
-    imgSrc: FileReader;
+    imgSrc: any;
     isLoading: boolean;
     isEditing: boolean;
 
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService,
+        private imageService: ImageService) {
         this.isLoading = false;
     }
 
@@ -36,7 +39,7 @@ export class ProductDetailComponent implements OnInit {
         if (cur) {
             this.isLoading = true;
             this.productSelected = <Product>cur;
-
+            this.loadImage();
             this.isLoading = false;
         }
         else
@@ -56,6 +59,11 @@ export class ProductDetailComponent implements OnInit {
 
             reader.onload = (event: ProgressEvent) => {
                 this.imgSrc = (<FileReader>event.target).result;
+
+                this.imageService.upload(this.imgSrc, this.productSelected.id).subscribe(() => { },
+                    error => {
+                        console.log(error);
+                    });
             }
             reader.readAsDataURL(event.target.files[0]);
         }
@@ -73,5 +81,35 @@ export class ProductDetailComponent implements OnInit {
 
     cancelSelected() {
         this.setInitialState();
+    }
+
+    createImageFromBlob(image: Blob) {
+        let reader = new FileReader();
+
+        reader.onload = () => {
+            this.imgSrc = reader.result.replace('data:application/json', 'data:image/png');
+        }
+
+        if (image) {
+            reader.readAsDataURL(image);
+        }
+    }
+
+    loadImage() {
+        this.isLoading = true;
+        this.imgSrc = '';
+
+        this.imageService.check(this.productSelected.id).subscribe(resp => {
+            if (resp.status==200) {
+                this.imageService.get(this.productSelected.id).subscribe(data => {
+                    this.createImageFromBlob(data);
+                    this.isLoading = false;
+                }, error => {
+                    if (error.status != '406')
+                        console.log(error);
+                    this.isLoading = false;
+                });
+            }
+        });
     }
 }

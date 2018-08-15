@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using SimpleCatalog.Services.Interfaces;
+using SimpleCatalog.Services.Models;
 using SimpleCatalog.Services.Services;
 
 namespace SimpleCatalog.Web
@@ -45,10 +46,15 @@ namespace SimpleCatalog.Web
             // Connection string for using in DBContext
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
+            var imageConfig = new ImageConfig();
+            Configuration.Bind(imageConfig);
+
             services
                 .AddDbContext<SimpleCatalogDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient, ServiceLifetime.Transient)
                 .AddTransient<IProductCategoryService, ProductCategoryService>()
                 .AddTransient<IProductService, ProductService>()
+                .AddTransient<IImageService, ImageService>()
+                .AddSingleton(imageConfig)
                 .AddSingleton(new LoggerFactory().AddNLog())
                 .AddLogging()
                 .AddMvc()
@@ -63,7 +69,7 @@ namespace SimpleCatalog.Web
             var provider = services.BuildServiceProvider();
             _logger = provider.GetService<ILogger<Startup>>();
             _logger.LogInformation("Start the project");
-
+            
             try
             {
                 //Apply database migrations. (It will create DB if not exist)
