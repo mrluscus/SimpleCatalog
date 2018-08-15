@@ -13,13 +13,14 @@ export class AppComponent {
 
   onChangeCategory(category: ProductCategory) {
     this.productCategoryNode = category;
+    this.productSelected = new Product();
   }
 
   onChangeProduct(product: Product) {
     this.productSelected = product;
   }
 
-  onEditProduct(){
+  onEditProduct() {
     this.productCategoryNode = Object.assign({}, this.productCategoryNode);
   }
 }
